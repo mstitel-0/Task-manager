@@ -18,11 +18,11 @@ import java.security.Key;
 public class JwtUtils {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${env.jwtSecret}")
+    @Value("${jwtSecret}")
     private String jwtPass ;
 
     @Value("${jwtExp}")
-    private int jwtExpirationsMs = 86400000;
+    private int jwtExpirationsMs ;
 
     public String generateJwtToken(Authentication authentication){
 
