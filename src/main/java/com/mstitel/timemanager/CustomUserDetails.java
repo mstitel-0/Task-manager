@@ -14,17 +14,15 @@ public class CustomUserDetails implements UserDetails {
     private ObjectId id;
     private String email;
     private String username;
-    private String role;
 
     @JsonIgnore
     private String password;
 
-    public CustomUserDetails(ObjectId id, String username, String email, String password, String role) {
+    public CustomUserDetails(ObjectId id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public static CustomUserDetails build(User user){
@@ -33,8 +31,7 @@ public class CustomUserDetails implements UserDetails {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getPassword(),
-                user.getRole());
+                user.getPassword());
     }
 
     @Override
@@ -60,9 +57,6 @@ public class CustomUserDetails implements UserDetails {
         return id;
     }
 
-    public String getRole(){
-        return role;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
