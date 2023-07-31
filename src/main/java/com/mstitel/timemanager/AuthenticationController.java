@@ -4,11 +4,13 @@ import com.mstitel.timemanager.Requests.LoginRequest;
 import com.mstitel.timemanager.Requests.SignUpRequest;
 import com.mstitel.timemanager.Responses.JwtResponse;
 import com.mstitel.timemanager.Responses.MessageResponse;
+import com.mstitel.timemanager.User.CustomUserDetails;
+import com.mstitel.timemanager.User.User;
+import com.mstitel.timemanager.User.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,7 +43,6 @@ public class AuthenticationController {
                 String jwt = jwtUtils.generateJwtToken(authentication);
 
                 CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
                 return ResponseEntity.ok(new JwtResponse(
                         jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()
                 ));
@@ -57,7 +58,7 @@ public class AuthenticationController {
                     return ResponseEntity.badRequest().body(new MessageResponse("Email is already taken!"));
                 }
 
-                User user = new User(signUpRequest.getUsername(),signUpRequest.getEmail(),signUpRequest.getPassword());
+                User user = new User(signUpRequest.getUsername(),signUpRequest.getEmail(),encoder.encode(signUpRequest.getPassword()));
                 userRepository.save(user);
 
                 return ResponseEntity.ok(new MessageResponse("User registered!"));

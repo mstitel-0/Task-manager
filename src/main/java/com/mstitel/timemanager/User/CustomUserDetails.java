@@ -1,4 +1,4 @@
-package com.mstitel.timemanager;
+package com.mstitel.timemanager.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
@@ -11,14 +11,14 @@ import java.util.Objects;
 public class CustomUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
-    private String id;
+    private ObjectId id;
     private String email;
     private String username;
 
     @JsonIgnore
     private String password;
 
-    public CustomUserDetails(String id, String username, String email, String password) {
+    public CustomUserDetails(ObjectId id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -53,7 +53,7 @@ public class CustomUserDetails implements UserDetails {
         return email;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 

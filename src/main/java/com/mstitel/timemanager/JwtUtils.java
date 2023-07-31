@@ -1,5 +1,6 @@
 package com.mstitel.timemanager;
 
+import com.mstitel.timemanager.User.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

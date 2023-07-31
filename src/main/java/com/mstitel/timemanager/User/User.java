@@ -1,4 +1,4 @@
-package com.mstitel.timemanager;
+package com.mstitel.timemanager.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Id
-    private String id;
+    private ObjectId id;
     private String username;
     private String email;
     private String password;

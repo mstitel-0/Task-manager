@@ -1,5 +1,8 @@
-package com.mstitel.timemanager;
+package com.mstitel.timemanager.User;
 
+import com.mstitel.timemanager.User.CustomUserDetails;
+import com.mstitel.timemanager.User.User;
+import com.mstitel.timemanager.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
