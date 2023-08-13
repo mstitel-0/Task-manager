@@ -21,7 +21,7 @@ function Login(){
                 navigate('/home');
           }, fail => {
             alert("Incorrect data");
-           console.error(fail); // Error!
+           console.error(fail);
   });
         }
  
