@@ -2,11 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import api from './api/axiosConfig';
 import {useState, useEffect} from 'react';
-import Layout from './components/Layout';
 import {Routes, Route} from 'react-router-dom';
-import Home from './components/home/Home';
-import { BrowserRouter } from 'react-router-dom';
-import Login from './components/Auth/Login';
+import Home from './components/Home/Home';
+import Login from './components/Login/Login';
+import Registration from './components/Signup/Registration'
 // function App() {
 
 //   const [tasks, setTasks] = useState();
@@ -50,7 +49,13 @@ import Login from './components/Auth/Login';
 function App() {
     return(
       <div>
-      <Login/>
+
+        <Routes>
+          <Route path= "/home" element={ <Home/> } />
+          <Route path= "/login" element={ <Login/> }/>
+          <Route path= "/signup" element= { <Registration/> }/>
+        </Routes>
+      
     </div>
     )
 }

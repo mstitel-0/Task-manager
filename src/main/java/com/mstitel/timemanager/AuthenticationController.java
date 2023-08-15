@@ -36,6 +36,10 @@ public class AuthenticationController {
             @PostMapping("/signin")
             public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
 
+                if(loginRequest.getUsername().equals("") || loginRequest.getPassword().equals("")){
+                    return ResponseEntity.badRequest().body(new MessageResponse("Empty field"));
+                }
+
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword())
                 );
@@ -56,6 +60,9 @@ public class AuthenticationController {
                 }
                 if (userRepository.existsByEmail(signUpRequest.getEmail())){
                     return ResponseEntity.badRequest().body(new MessageResponse("Email is already taken!"));
+                }
+                if(signUpRequest.getUsername().equals("") || signUpRequest.getEmail().equals("") || signUpRequest.getPassword().equals("")){
+                    return ResponseEntity.badRequest().body(new MessageResponse("Empty field"));
                 }
 
                 User user = new User(signUpRequest.getUsername(),signUpRequest.getEmail(),encoder.encode(signUpRequest.getPassword()));
