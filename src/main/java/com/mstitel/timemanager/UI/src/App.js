@@ -6,6 +6,7 @@ import {Routes, Route} from 'react-router-dom';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Registration from './components/Signup/Registration'
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 // function App() {
 
 //   const [tasks, setTasks] = useState();
@@ -49,13 +50,17 @@ import Registration from './components/Signup/Registration'
 function App() {
     return(
       <div>
-
         <Routes>
-          <Route path= "/home" element={ <Home/> } />
+          <Route path= "/home" 
+            element={ 
+              <PrivateRoute>
+                <Home/> 
+              </PrivateRoute>
+            } 
+          />
           <Route path= "/login" element={ <Login/> }/>
           <Route path= "/signup" element= { <Registration/> }/>
         </Routes>
-      
     </div>
     )
 }

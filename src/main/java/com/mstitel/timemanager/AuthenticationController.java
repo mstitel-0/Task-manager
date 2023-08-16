@@ -8,6 +8,7 @@ import com.mstitel.timemanager.User.CustomUserDetails;
 import com.mstitel.timemanager.User.User;
 import com.mstitel.timemanager.User.UserRepository;
 import jakarta.validation.Valid;
+import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +49,7 @@ public class AuthenticationController {
 
                 CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
                 return ResponseEntity.ok(new JwtResponse(
-                        jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()
+                        jwt, userDetails.getId().toString(), userDetails.getUsername(), userDetails.getEmail()
                 ));
             }
 

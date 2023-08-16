@@ -11,18 +11,20 @@ function Login(){
  
  
     async function login(event) {
-        event.preventDefault();
+      event.preventDefault();
         try {
           await axios.post("/api/auth/signin", {
             username: username,
             password: password
-            }).then((res) => {
-              console.log(res);
-              navigate('/home');
-            }, fail => {
-              alert("Incorrect login or password");
-              console.error(fail);
-            });
+          }).then((res) => {
+                console.log(res);
+                localStorage.setItem("token",res.data.token);
+                localStorage.setItem("id",res.data.id);
+                navigate('/home');
+              }, fail => {
+                  alert("Incorrect login or password");
+                  console.error(fail);
+                });
           }
          catch (err) {
           alert(err);
@@ -33,6 +35,7 @@ function Login(){
        <div>
           <div className="containeros">
             <h3>Login</h3>
+
                 <label>Username</label>
 
                 <input type="username"  className="input" id="username" placeholder="Enter username"          

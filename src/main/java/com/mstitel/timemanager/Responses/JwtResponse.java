@@ -5,11 +5,11 @@ import org.bson.types.ObjectId;
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
-    private ObjectId id;
+    private String id;
     private String username;
     private String email;
 
-    public JwtResponse(String token, ObjectId id, String username, String email) {
+    public JwtResponse(String token, String id, String username, String email) {
         this.token = token;
         this.id = id;
         this.username = username;
@@ -24,7 +24,7 @@ public class JwtResponse {
         return type;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
@@ -44,7 +44,7 @@ public class JwtResponse {
         this.type = type;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

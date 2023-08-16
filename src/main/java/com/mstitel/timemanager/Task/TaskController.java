@@ -1,16 +1,19 @@
 package com.mstitel.timemanager.Task;
 
+import com.mstitel.timemanager.Requests.AddTaskRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.Optional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"}, allowCredentials = "true")
 public class TaskController {
 
     @Autowired
@@ -28,12 +31,13 @@ public class TaskController {
 
     @PostMapping("/delete/{id}")
     public ResponseEntity<String> deleteTask(@PathVariable ObjectId id){
+        taskService.deleteTask(id);
         return new ResponseEntity<String>("Task deleted",HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addTask(Task task){
-        taskService.addTask(task);
+    public ResponseEntity<?> addTask(@Valid @RequestBody AddTaskRequest addTaskRequest){
+        taskService.addTask(addTaskRequest);
         return new ResponseEntity<>("Task added successfully",HttpStatus.OK);
     }
 

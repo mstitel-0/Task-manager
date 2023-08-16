@@ -18,6 +18,11 @@ public class Task {
 
     private double timeToComplete;
 
-    private ObjectId userId;
+    private ObjectId usezrId;
 
+    public Task(String name, double timeToComplete, ObjectId userId) {
+        this.name = name;
+        this.timeToComplete = timeToComplete;
+        this.userId = userId;
+    }
 }

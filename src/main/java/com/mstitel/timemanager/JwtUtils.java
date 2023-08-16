@@ -42,12 +42,12 @@ public class JwtUtils {
 
     public String getUserNameFromJwtToken(String token){
         return Jwts.parserBuilder().setSigningKey(key())
-                .build().parseClaimsJwt(token)
+                .build().parseClaimsJws(token)
                 .getBody().getSubject();
     }
     public boolean validateJwtToken(String authToken){
         try{
-            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJwt(authToken);
+            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken);
             return true;
         }
         catch (MalformedJwtException e){

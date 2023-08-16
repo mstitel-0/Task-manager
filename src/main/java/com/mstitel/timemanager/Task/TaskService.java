@@ -2,9 +2,12 @@ package com.mstitel.timemanager.Task;
 import java.util.List;
 import java.util.Optional;
 
+import com.mstitel.timemanager.Requests.AddTaskRequest;
+import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class TaskService {
@@ -25,8 +28,12 @@ public class TaskService {
         taskToUpdate.setTimeToComplete(updatedTask.getTimeToComplete());
     }
 
-    public void addTask(Task task){
-        taskRepository.save(task);
+    public Task addTask(@Valid @RequestBody AddTaskRequest addTaskRequest){
+        Task task = new Task();
+        task.setName(addTaskRequest.getName());
+        task.setTimeToComplete(addTaskRequest.getTime());
+        task.setUserId(addTaskRequest.getUserId());
+        return taskRepository.save(task);
     }
     public void deleteTask(ObjectId id){
         taskRepository.deleteById(id);
