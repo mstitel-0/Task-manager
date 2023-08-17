@@ -1,10 +1,14 @@
 package com.mstitel.timemanager.Task;
 
 import com.mstitel.timemanager.Requests.AddTaskRequest;
+import com.mstitel.timemanager.Responses.MessageResponse;
+import com.mstitel.timemanager.User.CustomUserDetails;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
@@ -12,8 +16,8 @@ import java.util.Optional;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tasks")
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"}, allowCredentials = "true")
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     @Autowired
@@ -35,10 +39,14 @@ public class TaskController {
         return new ResponseEntity<String>("Task deleted",HttpStatus.OK);
     }
 
+
     @PostMapping("/add")
     public ResponseEntity<?> addTask(@Valid @RequestBody AddTaskRequest addTaskRequest){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
+        addTaskRequest.setUserId(user.getId());
         taskService.addTask(addTaskRequest);
-        return new ResponseEntity<>("Task added successfully",HttpStatus.OK);
+        return new ResponseEntity<>(new MessageResponse("Task added successfully"),HttpStatus.OK);
     }
 
     @PostMapping("/update")

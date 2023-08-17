@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired

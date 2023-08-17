@@ -18,7 +18,7 @@ public class Task {
 
     private double timeToComplete;
 
-    private ObjectId usezrId;
+    private ObjectId userId;
 
     public Task(String name, double timeToComplete, ObjectId userId) {
         this.name = name;
