@@ -43,8 +43,7 @@ function Registration(){
             <div className="containeros">
                 <h3>Registration</h3>
                 <label>Username</label>
-                <input type="username" className="input" id ="username" placeholder="Enter username"
-                    value={username}
+                <input type="username" className="input" id ="username" placeholder="Enter username" value={username}
                     onChange={(event) => {
                         setUsername(event.target.value);
                     }}

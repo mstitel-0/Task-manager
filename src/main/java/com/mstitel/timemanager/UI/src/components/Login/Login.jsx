@@ -18,7 +18,7 @@ function Login(){
             password: password
           }).then((res) => {
                 console.log(res);
-                localStorage.setItem("token",res.data.token);
+                sessionStorage.setItem("token",res.data.token);
                 navigate('/home');
               }, fail => {
                   alert("Incorrect login or password");
