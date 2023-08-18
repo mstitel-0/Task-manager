@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import './Home.css';
-import { Modal } from "../Modal/Modal";
+import { Modal } from "../AddDialogWindow/AddDialogWindow";
 
 function Home() {
     const [name, setName] = useState("");
@@ -8,7 +8,7 @@ function Home() {
     const [openModal, setOpenModal] = useState(false);
    
     return(
-        <div> 
+        <div classNmae="container"> 
             <div className="containeros">
                 <button id="submitbtn" className="btn btn-primary" 
                 onClick={() => {
