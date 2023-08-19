@@ -17,7 +17,6 @@
     padding: 8px 24px;
     margin-top: -75px;
     background-color: rgb(199, 227, 232);
-    z-index: 1000;
   }
   
   .modal-task-added {
@@ -41,7 +40,7 @@
   }
  
   .modal-image {
-    height: 100px;
+    height: 200px;
     width: auto;
   }
   
@@ -52,19 +51,12 @@
     margin-top: 5px;
     padding: 10px;
   }
+
 .modal-button-container{
     display:inline-block;
     margin-top: 30px;
 }
+
 button#send-button{
     margin-right: 10px;
-}
-.dialog-window-overlays{
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, .7);
-  z-index: 1000;
 }
