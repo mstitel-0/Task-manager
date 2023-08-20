@@ -1,10 +1,52 @@
 import { useEffect, useState } from "react";
 import './Home.css';
 import { Modal } from "../AddDialogWindow/AddDialogWindow";
-import Tasks from "../TasksList/TasksList"
+import  Tasks  from "../TasksList/TasksList"
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
     const [openModal, setOpenModal] = useState(false);
+    const navigate = useNavigate();
+    const [tasks, setTasks] = useState([]);
+    const jwt = sessionStorage.getItem("token");
+
+    const logout = () => {
+        fetch('http://localhost:8080/api/auth/logout', {
+          method: 'GET', 
+          credentials: 'include',
+        })
+          .then((response) => {
+            if (response.ok) {
+              sessionStorage.setItem("token","");
+              navigate('/login');
+              console.log('Logout successful');
+            } else {
+              console.error('Logout failed');
+            }
+          })
+          .catch((error) => {
+            console.error('Logout error:', error);
+          });
+      }
+
+      const getTasks = async () => {
+        fetch("http://localhost:8080/api/tasks/all", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`
+            }
+          }).then((response) => {
+            if(response.status === 200 ) return response.json();
+        }).then((data) => {
+            console.log(data);
+            setTasks(data);
+          },
+           fail => {
+            console.log(fail);
+           })
+    }
+    
    
     return(
         <div> 
@@ -15,12 +57,13 @@ function Home() {
                 }}>Add task</button>
                 {openModal && 
                     <div className="modal-overlay">
-                        <Modal openModal={openModal} setOpenModal={setOpenModal} />
+                        <Modal getTa openModal={openModal} setOpenModal={setOpenModal} getTasks={getTasks} tasks={tasks} />
                     </div>
                 } 
+                <button className="btn btn-primary" onClick={logout}>Logout</button>
             </div>
             <div>
-                <Tasks/>
+                <Tasks getTasks={getTasks} tasks={tasks}/>
             </div>       
         </div>
     )

@@ -25,7 +25,9 @@ public class TaskController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Task>> getAllTasks(){
-        return new ResponseEntity<>(taskService.allTasks(), HttpStatus.OK);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
+        return new ResponseEntity<>(taskService.allTasks(user.getId()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

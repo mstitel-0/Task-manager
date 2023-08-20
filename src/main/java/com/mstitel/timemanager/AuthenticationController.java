@@ -8,7 +8,9 @@ import com.mstitel.timemanager.User.CustomUserDetails;
 import com.mstitel.timemanager.User.User;
 import com.mstitel.timemanager.User.UserRepository;
 import jakarta.validation.Valid;
-import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"}, allowCredentials = "true", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -33,6 +35,9 @@ public class AuthenticationController {
 
             @Autowired
             JwtUtils jwtUtils;
+
+            @Value("localhost")
+            private String domain;
 
             @PostMapping("/signin")
             public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
@@ -71,4 +76,14 @@ public class AuthenticationController {
 
                 return ResponseEntity.ok(new MessageResponse("User registered!"));
             }
+            @GetMapping("/logout")
+                public ResponseEntity<?> logout () {
+                    ResponseCookie cookie = ResponseCookie.from("token", "")
+                        .domain(domain)
+                        .path("/")
+                        .maxAge(0)
+                        .build();
+                    return ResponseEntity.ok()
+                            .header(HttpHeaders.SET_COOKIE, cookie.toString()).body("ok");
+    }
 }

@@ -1,20 +1,8 @@
 import React from 'react'
 import { useEffect, useState } from "react";
-import axios from "../../api/axiosConfig"
 import "./TasksList.css"
-function Tasks() {
-    const [tasks, setTasks] = useState([]);
-
-    const getTasks = async () => {
-        try{
-            const response = await axios.get("/api/tasks/all");
-            setTasks(response.data);
-            console.log(response);
-        }
-        catch(err){
-            console.log(err);
-        }
-    }
+function Tasks({ getTasks , tasks}) {
+    const jwt = sessionStorage.getItem("token");
 
     useEffect(() => {
         getTasks();

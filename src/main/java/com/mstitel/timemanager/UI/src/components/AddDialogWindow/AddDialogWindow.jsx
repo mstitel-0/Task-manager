@@ -3,7 +3,7 @@ import './AddDialogWindow.css';
 import imgAdded from "../../resources/undraw_confirmed_re_sef7.svg";
 import imgDeclined from "../../resources/undraw_access_denied_re_awnf.svg";
 
-export const Modal = ( { openModal, setOpenModal} ) => {
+export const Modal = ( { openModal, setOpenModal, getTasks} ) => {
     const [name, setName] = useState("");
     const [time, setTime] = useState("");
     const jwt = sessionStorage.getItem("token");
@@ -29,6 +29,7 @@ export const Modal = ( { openModal, setOpenModal} ) => {
             if(response.status === 200 ) return response.json();
         }).then((data) => {
             setTaskAdded(true);
+            getTasks();
             setTimeout( () => {
                 setOpenModal(false);
             }, 2000);

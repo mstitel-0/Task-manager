@@ -16,8 +16,9 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public  List<Task> allTasks(){
-        return taskRepository.findAll();
+    public  List<Task> allTasks(ObjectId userId){
+
+        return taskRepository.findByUserId(userId);
     }
 
     public Optional<Task> singleTask(ObjectId id){
