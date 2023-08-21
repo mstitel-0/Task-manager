@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import './Home.css';
-import { Modal } from "../AddDialogWindow/AddDialogWindow";
+import { AddWIndow } from "../AddDialogWindow/AddDialogWindow";
 import  TasksList  from "../TasksList/TasksList"
 import { useNavigate } from 'react-router-dom';
 
@@ -39,7 +39,6 @@ function Home() {
           }).then((response) => {
             if(response.status === 200 ) return response.json();
         }).then((data) => {
-            console.log(data);
             setTasks(data);
           },
            fail => {
@@ -57,7 +56,7 @@ function Home() {
                   Add task</button>
                 {openModal && 
                     <div className="modal-overlay">
-                        <Modal openModal={openModal} setOpenModal={setOpenModal} getTasks={getTasks} tasks={tasks} />
+                        <AddWIndow openModal={openModal} setOpenModal={setOpenModal} getTasks={getTasks} tasks={tasks} />
                     </div>
                   } 
                 <button className="btn btn-primary" onClick={logout}>Logout</button>

@@ -15,12 +15,17 @@ function App() {
      <AppProvider>
       <div>
         <Routes>
-        <Route path="/home" element={<PrivateRoute />}>
-    <Route index element={<Home />} />
-    <Route path="task" element={<Task />} />
-  </Route>
+          <Route path= "/home" 
+            element={ 
+              <PrivateRoute>
+                <Home/>
+              </PrivateRoute>
+            } 
+          >
+          </Route>
           <Route path= "/login" element={ <Login/> }/>
           <Route path= "/signup" element= { <Registration/> }/>
+          <Route path="/task" element={<PrivateRoute> <Task /> </PrivateRoute>} />
         </Routes>
       </div>
     </AppProvider> 

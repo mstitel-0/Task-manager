@@ -3,7 +3,7 @@ import './AddDialogWindow.css';
 import imgAdded from "../../resources/undraw_confirmed_re_sef7.svg";
 import imgDeclined from "../../resources/undraw_access_denied_re_awnf.svg";
 
-export const Modal = ( { openModal, setOpenModal, getTasks, tasks} ) => {
+export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
     const [name, setName] = useState("");
     const [time, setTime] = useState("");
     const jwt = sessionStorage.getItem("token");
@@ -59,7 +59,7 @@ export const Modal = ( { openModal, setOpenModal, getTasks, tasks} ) => {
                 }}
             />
             <div className="modal-button-container">
-                <button id="send-button" className="btn btn-primary" onClick={closeDialog}>Cancel</button>
+                <button id="back-button" className="btn btn-primary" onClick={closeDialog}>Cancel</button>
                 <button className="btn btn-primary" onClick={addTask}>Submit</button>
             </div>
        </div>

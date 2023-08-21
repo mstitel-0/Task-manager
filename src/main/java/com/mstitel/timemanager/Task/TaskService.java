@@ -33,6 +33,7 @@ public class TaskService {
         Task taskToUpdate = taskRepository.findById(updatedTask.getId()).orElseThrow(()->new Exception("Task is not found"));
         taskToUpdate.setName(updatedTask.getName());
         taskToUpdate.setTimeToComplete(updatedTask.getTimeToComplete());
+        taskRepository.save(taskToUpdate);
     }
 
     public Task addTask(@Valid @RequestBody AddTaskRequest addTaskRequest){

@@ -4,12 +4,11 @@ const AppContext = createContext();
 
 export const useAppContext = () => useContext(AppContext);
 
-
 export const AppProvider = ({ children }) => {
   const [taskId, setTaskId] = useState("");
 
   const updateTaskId = ( objectId ) => {
-    setTaskId(objectId.toString());
+    setTaskId(objectId);
   }
 
   return (

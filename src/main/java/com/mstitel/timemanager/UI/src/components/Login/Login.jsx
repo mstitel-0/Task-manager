@@ -17,7 +17,6 @@ function Login(){
             username: username,
             password: password
           }).then((res) => {
-                console.log(res);
                 sessionStorage.setItem("token",res.data.token);
                 navigate('/home');
               }, fail => {
