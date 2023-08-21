@@ -7,61 +7,23 @@ import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Registration from './components/Signup/Registration'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-// function App() {
-
-//   const [tasks, setTasks] = useState();
-
-//   //better ux user experience 
-//   const getTasks = async () =>{
-
-//     try{
-
-//       const response = await api.get("/api/tasks/all");
-
-//       setTasks(response.data);
-
-//     }
-//     catch(err){
-//         console.log(err);
-//     }
-
-    
-//   } 
-
-//   useEffect(() => {
-//     getTasks();
-//   },[]);
-
-//   return (
-//     <div className="App">
-      
-//     <Routes>
-//       <Route path="/" element={<Layout/>}>
-//         <Route path="/" element={<Home/>}></Route>
-
-//       </Route>
-//     </Routes>
-
-//     </div>
-//   );
-// }
-
+import Task from './components/Task/Task'
+import { AppProvider } from './AppContext';
 
 function App() {
     return(
+     <AppProvider>
       <div>
         <Routes>
-          <Route path= "/home" 
-            element={ 
-              <PrivateRoute>
-                <Home/> 
-              </PrivateRoute>
-            } 
-          />
+        <Route path="/home" element={<PrivateRoute />}>
+    <Route index element={<Home />} />
+    <Route path="task" element={<Task />} />
+  </Route>
           <Route path= "/login" element={ <Login/> }/>
           <Route path= "/signup" element= { <Registration/> }/>
         </Routes>
-    </div>
+      </div>
+    </AppProvider> 
     )
 }
 

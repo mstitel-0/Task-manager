@@ -32,16 +32,16 @@
     transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
   }
   
-  .clickable-text:focus,
-  .clickable-text:hover {
+.clickable-text:focus,
+.clickable-text:hover {
     color: #0056b3; 
     text-decoration: none; 
   }
 
-  button#submitbtn{
+button#submitbtn{
     margin-top: 10px;
   }
-  .modal-overlay {
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -53,4 +53,7 @@
     justify-content: center;
     align-items: center;
   }
-  
+.task-container {
+    display: flex;
+    flex-wrap: wrap;
+  }  

@@ -1,6 +1,7 @@
 package com.mstitel.timemanager.Task;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.mstitel.timemanager.Requests.AddTaskRequest;
 import jakarta.validation.Valid;
@@ -16,9 +17,12 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public  List<Task> allTasks(ObjectId userId){
-
-        return taskRepository.findByUserId(userId);
+    public  List<TaskDTO> allTasks(ObjectId userId){
+        List<Task> tasks = taskRepository.findByUserId(userId);
+        List<TaskDTO> taskDTOs = tasks.stream()
+                .map(task -> new TaskDTO(task.getId().toString(), task.getName(), task.getTimeToComplete()))
+                .collect(Collectors.toList());
+        return taskDTOs;
     }
 
     public Optional<Task> singleTask(ObjectId id){

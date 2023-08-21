@@ -24,7 +24,7 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Task>> getAllTasks(){
+    public ResponseEntity<List<TaskDTO>> getAllTasks(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
         return new ResponseEntity<>(taskService.allTasks(user.getId()), HttpStatus.OK);

@@ -3,7 +3,7 @@ import './AddDialogWindow.css';
 import imgAdded from "../../resources/undraw_confirmed_re_sef7.svg";
 import imgDeclined from "../../resources/undraw_access_denied_re_awnf.svg";
 
-export const Modal = ( { openModal, setOpenModal, getTasks} ) => {
+export const Modal = ( { openModal, setOpenModal, getTasks, tasks} ) => {
     const [name, setName] = useState("");
     const [time, setTime] = useState("");
     const jwt = sessionStorage.getItem("token");
@@ -46,7 +46,6 @@ export const Modal = ( { openModal, setOpenModal, getTasks} ) => {
 
     return(
         <>
-    
        {!taskAdded && !taskDeclined && ( 
         <div className='modal-container'>
             <input className="modal-input" placeholder="Task name"  value={name} 
