@@ -39,5 +39,8 @@
 }
 
 button#signupbtn{
-  margin-top: 10px;
+    width: 110px;
+    height: 45px;
+    margin-top: 10px;
+    text-align: center;
 }

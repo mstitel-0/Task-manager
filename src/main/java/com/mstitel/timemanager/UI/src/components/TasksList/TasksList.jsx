@@ -13,18 +13,17 @@ function TasksList({ getTasks , tasks}) {
     },[])
 
   return (
-    <div className="task-container">
+    <>
         {tasks.map(task => (    
             <div key={task.id} className="task-card" onClick={ () => {
                 updateTaskId(task.id);
-                navigate('/task');
+                navigate('/home/task');
             }}>
                 <h3>{task.name}</h3>
-                <p>Date to Complete: {task.timeToComplete}</p>
             </div>
         ))
-        }
-    </div>
+        }   
+    </>
   )
 }
 

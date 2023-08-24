@@ -32,3 +32,6 @@
 button#back-button{
     margin-right: 10px;
   }
+button#submit{
+  width: 75px;
+}

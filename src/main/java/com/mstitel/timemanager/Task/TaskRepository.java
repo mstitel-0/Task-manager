@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Repository
 public interface TaskRepository extends MongoRepository<Task, ObjectId> {
@@ -15,4 +16,8 @@ public interface TaskRepository extends MongoRepository<Task, ObjectId> {
     Optional<Task> findById(ObjectId objectId);
 
     List<Task> findByUserId(ObjectId userId);
+
+    List<Task> findByNameRegexAndUserId(Pattern regex, ObjectId userId);
+
+
 }

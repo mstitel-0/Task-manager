@@ -26,7 +26,7 @@
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 .clickable-text {
-    color: #007bff; /* Blue color for the link */
+    color: #007bff;
     cursor: pointer;
     text-decoration: underline;
     transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
@@ -34,10 +34,13 @@
   
   .clickable-text:focus,
   .clickable-text:hover {
-    color: #0056b3; /* Darker blue color on focus/hover */
-    text-decoration: none; /* Remove underline on focus/hover */
+    color: #0056b3; 
+    text-decoration: none; 
   }
 
   button#loginbtn{
+    width: 70px;
+    height: 45px;
     margin-top: 10px;
+    text-align: center;
   }

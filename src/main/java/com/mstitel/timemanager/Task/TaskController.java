@@ -1,6 +1,5 @@
 package com.mstitel.timemanager.Task;
 
-import com.mstitel.timemanager.Requests.AddTaskRequest;
 import com.mstitel.timemanager.Responses.MessageResponse;
 import com.mstitel.timemanager.User.CustomUserDetails;
 import org.bson.types.ObjectId;
@@ -10,45 +9,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.Optional;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"}, allowCredentials = "true")
 @RequestMapping("/api/tasks")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<TaskDTO>> getAllTasks(){
+    @PostMapping("/add")
+    public ResponseEntity<?> addTask(@RequestBody Task task){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
-        return new ResponseEntity<>(taskService.allTasks(user.getId()), HttpStatus.OK);
+        task.setUserId(user.getId());
+        taskService.addTask(task);
+        return new ResponseEntity<>(new MessageResponse("Task added successfully"),HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Task>> getTask(@PathVariable ObjectId id){
         return new ResponseEntity<>(taskService.singleTask(id),HttpStatus.OK);
-    }
-
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<String> deleteTask(@PathVariable ObjectId id){
-        taskService.deleteTask(id);
-        return new ResponseEntity<String>("Task deleted",HttpStatus.OK);
-    }
-
-
-    @PostMapping("/add")
-    public ResponseEntity<?> addTask(@Valid @RequestBody AddTaskRequest addTaskRequest){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
-        addTaskRequest.setUserId(user.getId());
-        taskService.addTask(addTaskRequest);
-        return new ResponseEntity<>(new MessageResponse("Task added successfully"),HttpStatus.OK);
     }
 
     @PostMapping("/update")
@@ -57,4 +40,29 @@ public class TaskController {
         return new ResponseEntity<>("Task updated successfully",HttpStatus.OK);
     }
 
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<String> deleteTask(@PathVariable ObjectId id){
+        taskService.deleteTask(id);
+        return new ResponseEntity<String>("Task deleted",HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<TaskDTO>> getAllTasks(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
+        return new ResponseEntity<>(taskService.allTasks(user.getId()), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<List<TaskDTO>> searchByName(@PathVariable String name){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
+        return new ResponseEntity<>(taskService.searchTasks(name, user.getId()), HttpStatus.OK);
+    }
+
+    @PostMapping("/update/{id}/status/")
+    public ResponseEntity<String> updateTaskStatus(@PathVariable ObjectId id) throws Exception {
+        taskService.updateTaskStatus(id);
+        return new ResponseEntity<>("Status updated", HttpStatus.OK);
+    }
 }

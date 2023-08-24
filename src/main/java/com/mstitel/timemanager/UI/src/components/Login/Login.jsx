@@ -33,25 +33,20 @@ function Login(){
        <div>
           <div className="containeros">
             <h3>Login</h3>
-
                 <label>Username</label>
-
                 <input type="username"  className="input" id="username" placeholder="Enter username"          
                   value={username}
                   onChange={(event) => {
                   setUsername(event.target.value);
                   }}         
                 />
-
                 <label>Password</label>
-
                 <input  type="password"  className="input" id="password" placeholder="Enter password"           
                   value={password}
                   onChange={(event) => {
                   setPassword(event.target.value);
                   }}
                 />
-
                 <button id="loginbtn" type="submit" className="btn btn-primary" onClick={login} >Login</button>
                 <p>Don't have an account?<span onClick={() => {
                   navigate('/signup'); 

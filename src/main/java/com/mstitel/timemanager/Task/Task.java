@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+
 @Document(collection = "tasks")
 @Data
 @AllArgsConstructor
@@ -16,13 +19,15 @@ public class Task {
 
     private String name;
 
-    private double timeToComplete;
+    private String description;
+    private Date endDate;
+    private TaskStatus status = TaskStatus.IN_PROGRESS;
 
     private ObjectId userId;
 
-    public Task(String name, double timeToComplete, ObjectId userId) {
+    public Task(String name, String description, Date endDate) {
         this.name = name;
-        this.timeToComplete = timeToComplete;
-        this.userId = userId;
+        this.description = description;
+        this.endDate = endDate;
     }
 }

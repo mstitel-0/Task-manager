@@ -3,32 +3,19 @@ import './Home.css';
 import { AddWIndow } from "../AddDialogWindow/AddDialogWindow";
 import  TasksList  from "../TasksList/TasksList"
 import { useNavigate } from 'react-router-dom';
+import './Home.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from "../NavBar/NavBar";
+import Task from '../Task/Task'
+import img from '../../resources/add-btn.svg'
+
 
 function Home() {
     const [openModal, setOpenModal] = useState(false);
     const navigate = useNavigate();
     const [tasks, setTasks] = useState([]);
     const jwt = sessionStorage.getItem("token");
-
-    const logout = () => {
-        fetch('http://localhost:8080/api/auth/logout', {
-          method: 'GET', 
-          credentials: 'include',
-        })
-          .then((response) => {
-            if (response.ok) {
-              sessionStorage.setItem("token","");
-              navigate('/login');
-              console.log('Logout successful');
-            } else {
-              console.error('Logout failed');
-            }
-          })
-          .catch((error) => {
-            console.error('Logout error:', error);
-          });
-      }
-
+ 
       const getTasks = async () => {
         fetch("http://localhost:8080/api/tasks/all", {
             method: "GET",
@@ -40,32 +27,37 @@ function Home() {
             if(response.status === 200 ) return response.json();
         }).then((data) => {
             setTasks(data);
+            console.log(data);
           },
            fail => {
             console.log(fail);
            })
     }
     
-    return(
-        <div> 
-            <div className="containeros">
-                <button id="submitbtn" className="btn btn-primary" 
-                onClick={() => {
-                    setOpenModal(true);
-                }}>
-                  Add task</button>
-                {openModal && 
-                    <div className="modal-overlay">
-                        <AddWIndow openModal={openModal} setOpenModal={setOpenModal} getTasks={getTasks} tasks={tasks} />
-                    </div>
-                  } 
-                <button className="btn btn-primary" onClick={logout}>Logout</button>
+    return( 
+      <div className="main-page">
+        <div className="content-box glass-effect">
+          <div className="navBar">
+              <NavBar setTasks={setTasks} getTasks={getTasks}/>
+          </div>
+          <div className="main-content">
+            <div className="tasks-container">
+                <TasksList getTasks={getTasks} tasks={tasks} />
             </div>
-            <div className="task-container">
-                <TasksList getTasks={getTasks} tasks={tasks}/>
-            </div>       
+          </div>
         </div>
-    )
+          <div className="add-button-container" onClick={() => {
+            setOpenModal(true);
+              }}>    
+           <img src={img} width="25" height="25"  />
+          </div>
+          {openModal && 
+            <div className="modal-overlay">
+              <AddWIndow openModal={openModal} setOpenModal={setOpenModal} getTasks={getTasks} tasks={tasks}/>
+            </div>
+          }        
+    </div>
+  )
 }
 
 export default Home;

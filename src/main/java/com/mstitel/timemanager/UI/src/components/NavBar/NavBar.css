@@ -1,0 +1,36 @@
+.navbar {
+    background-color: transparent;
+    position: absolute; 
+    left: 10px; 
+    margin-bottom: 40px;
+    z-index: 1000; 
+  }
+ 
+  .navbar-brand {
+    font-size: 1.5rem; 
+    font-weight: bold;
+  }
+  
+  .navbar a {
+    color: gray;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+  }
+  
+  .navbar a:hover {
+    cursor: pointer;
+    color: purple;
+    background-color: rgba(255, 255, 255, 0.734);
+    border-radius: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .navbar-grid {
+    display: flex;
+    justify-content: space-between; /* Space evenly between child elements */
+    align-items: center; /* Vertically align items in the center */
+    width: 100%; /* Ensure the grid takes full width */
+  }
+  .home-bar{
+    margin-right: 700px;
+  }

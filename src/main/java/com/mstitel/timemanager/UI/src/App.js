@@ -9,6 +9,7 @@ import Registration from './components/Signup/Registration'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Task from './components/Task/Task'
 import { AppProvider } from './AppContext';
+import Test from '../src/Test';
 
 function App() {
     return(
@@ -25,7 +26,8 @@ function App() {
           </Route>
           <Route path= "/login" element={ <Login/> }/>
           <Route path= "/signup" element= { <Registration/> }/>
-          <Route path="/task" element={<PrivateRoute> <Task /> </PrivateRoute>} />
+          <Route path="/home/task" element={<PrivateRoute> <Task /> </PrivateRoute>} />
+          <Route path="/test" element={<Test/>}/>
         </Routes>
       </div>
     </AppProvider> 

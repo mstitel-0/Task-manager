@@ -5,7 +5,8 @@ import imgDeclined from "../../resources/undraw_access_denied_re_awnf.svg";
 
 export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
     const [name, setName] = useState("");
-    const [time, setTime] = useState("");
+    const [description, setDescription] = useState("");
+    const [endDate, setEndDate] = useState("");
     const jwt = sessionStorage.getItem("token");
     const [taskAdded, setTaskAdded] = useState(false);
     const [taskDeclined, setTaskDeclined] = useState(false);
@@ -23,7 +24,8 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
             },
             body: JSON.stringify({
                 name: name,
-                time: time
+                description: description,
+                endDate: endDate
             })
           }).then((response) => {
             if(response.status === 200 ) return response.json();
@@ -53,14 +55,19 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
                     setName(event.target.value);
                 }} 
             />
-            <input className="modal-input"  placeholder="Hours to complete"  value={time} 
+            <input className="modal-input"  placeholder="Description"  value={description} 
                 onChange={(event) => {
-                    setTime(event.target.value);
+                    setDescription(event.target.value);
+                }}
+            />
+             <input type="date" className="modal-input"  placeholder="Date"  value={endDate} 
+                onChange={(event) => {
+                    setEndDate(event.target.value);
                 }}
             />
             <div className="modal-button-container">
                 <button id="back-button" className="btn btn-primary" onClick={closeDialog}>Cancel</button>
-                <button className="btn btn-primary" onClick={addTask}>Submit</button>
+                <button id="submit-button"className="btn btn-primary" onClick={addTask}>Submit</button>
             </div>
        </div>
        )}
