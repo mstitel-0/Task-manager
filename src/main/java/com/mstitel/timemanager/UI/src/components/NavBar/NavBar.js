@@ -8,10 +8,11 @@ function NavBar({ setTasks, searchVisible, getTasks }) {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const jwt = sessionStorage.getItem("token");
+  const visible = searchVisible == null? false : true; 
 
   const logout = async() => {
-    axios.get('/api/auth/logout',
-      ).then((response) => {
+    axios.post('/api/auth/logout',
+      ).then(() => {
           sessionStorage.setItem("token","");
           navigate('/login');
         }).catch((error) => {
@@ -22,7 +23,6 @@ function NavBar({ setTasks, searchVisible, getTasks }) {
     axios.get(`/api/tasks/search/${name}`,
       ).then((res) => {
           if(res.data != null){
-            console.log(res.data);
             setTasks(res.data);
           }  
         },fail => {
@@ -43,7 +43,6 @@ function NavBar({ setTasks, searchVisible, getTasks }) {
       </ul>
       </div>
       <form className="form-inline">
-        {!searchVisible &&
           <div className="input-group">
             <input
               type="text"
@@ -58,13 +57,12 @@ function NavBar({ setTasks, searchVisible, getTasks }) {
                 }
                 else{
                   setName(event.target.value);
-                  console.log(event.target.value);
                   search(name);
                 }
               }}
+              disabled={visible}
             />
-        </div>
-        }         
+        </div>      
       </form>
       <ul className="navbar-nav">
         <li className="nav-item">

@@ -7,16 +7,17 @@ import com.mstitel.timemanager.Responses.MessageResponse;
 import com.mstitel.timemanager.User.CustomUserDetails;
 import com.mstitel.timemanager.User.User;
 import com.mstitel.timemanager.User.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
@@ -35,8 +36,7 @@ public class AuthenticationController {
             @Autowired
             JwtUtils jwtUtils;
 
-            @Value("localhost")
-            private String domain;
+            private SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
             @PostMapping("/signin")
             public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
@@ -75,14 +75,9 @@ public class AuthenticationController {
 
                 return ResponseEntity.ok(new MessageResponse("User registered!"));
             }
-            @GetMapping("/logout")
-                public ResponseEntity<?> logout () {
-                    ResponseCookie cookie = ResponseCookie.from("token", "")
-                        .domain(domain)
-                        .path("/")
-                        .maxAge(0)
-                        .build();
-                    return ResponseEntity.ok()
-                            .header(HttpHeaders.SET_COOKIE, cookie.toString()).body("ok");
-    }
+            @PostMapping("/logout")
+            public ResponseEntity<?> performLogout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+                this.logoutHandler.logout(request, response, authentication);
+                return ResponseEntity.ok(new MessageResponse("Successful logout"));
+            }
 }

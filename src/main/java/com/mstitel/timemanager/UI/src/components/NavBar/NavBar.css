@@ -27,9 +27,9 @@
   }
   .navbar-grid {
     display: flex;
-    justify-content: space-between; /* Space evenly between child elements */
-    align-items: center; /* Vertically align items in the center */
-    width: 100%; /* Ensure the grid takes full width */
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%; 
   }
   .home-bar{
     margin-right: 700px;

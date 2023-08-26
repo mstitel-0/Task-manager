@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import './EditDialogWindow.css';
-import { useAppContext } from '../../AppContext';
 import axios from '../../api/axiosConfig'
+import { useParams } from 'react-router-dom';
 
 function EditDialogWindow( { setOpenEditDialogWindow, getTask } ) {
     const [taskEdited, setTaskEdited] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState("");
     const [endDate, setEndDate] = useState("");
-    const { taskId } = useAppContext();
+    const { taskId } = useParams();
+    const currentDate = new Date().toISOString().split("T")[0];
+
 
     const editTask = async () => {
         axios.post('/api/tasks/update', {
@@ -35,7 +37,7 @@ function EditDialogWindow( { setOpenEditDialogWindow, getTask } ) {
                     setDescription(event.target.value);
                 }}
             />
-             <input type="date" className="modal-input"  placeholder="Date"  value={endDate} 
+             <input type="date" className="modal-input"  placeholder="Date" min={currentDate}required value={endDate} 
                 onChange={(event) => {
                     setEndDate(event.target.value);
                 }}

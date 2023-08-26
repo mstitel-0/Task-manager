@@ -60,7 +60,7 @@ public class TaskController {
         return new ResponseEntity<>(taskService.searchTasks(name, user.getId()), HttpStatus.OK);
     }
 
-    @PostMapping("/update/{id}/status/")
+    @PostMapping("/update/{id}/status")
     public ResponseEntity<String> updateTaskStatus(@PathVariable ObjectId id) throws Exception {
         taskService.updateTaskStatus(id);
         return new ResponseEntity<>("Status updated", HttpStatus.OK);

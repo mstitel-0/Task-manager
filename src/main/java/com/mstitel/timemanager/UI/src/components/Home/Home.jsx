@@ -19,7 +19,6 @@ function Home() {
   const getTasks = async () => {
     axios.get('/api/tasks/all',
       ).then((res) => {
-        console.log(res);
           setTasks(res.data);
           },fail => {
               console.log(fail);

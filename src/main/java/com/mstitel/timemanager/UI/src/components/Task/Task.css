@@ -75,7 +75,13 @@
 div#delete{
   padding-top: 12px;
 }
-
+.done-button{
+  border-radius: 15%;
+}
+.done-button:hover{
+  background-color: rgba(255, 255, 255, 0.478);
+  
+}
 
 
 

@@ -8,12 +8,10 @@ import Login from './components/Login/Login';
 import Registration from './components/Signup/Registration'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Task from './components/Task/Task'
-import { AppProvider } from './AppContext';
 import Test from '../src/Test';
 
 function App() {
     return(
-     <AppProvider>
       <div>
         <Routes>
           <Route path= "/home" 
@@ -27,11 +25,10 @@ function App() {
           <Route path="/" element={ <Login/> }/>
           <Route path= "/login" element={ <Login/> }/>
           <Route path= "/signup" element= { <Registration/> }/>
-          <Route path="/home/task" element={<PrivateRoute> <Task /> </PrivateRoute>} />
+          <Route path="/home/task/:taskId" element={<PrivateRoute> <Task /> </PrivateRoute>} />
           <Route path="/test" element={<Test/>}/>
         </Routes>
       </div>
-    </AppProvider> 
     )
 }
 

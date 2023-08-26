@@ -10,6 +10,8 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
     const [endDate, setEndDate] = useState("");
     const [taskAdded, setTaskAdded] = useState(false);
     const [taskDeclined, setTaskDeclined] = useState(false);
+    const currentDate = new Date().toISOString().split("T")[0];
+
 
     const closeDialog = () =>{
         setOpenModal(false);
@@ -50,7 +52,7 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
                     setDescription(event.target.value);
                 }}
             />
-             <input type="date" className="modal-input"  placeholder="Date"  value={endDate} 
+             <input type="date" className="modal-input"  placeholder="Date" min={currentDate}required value={endDate} 
                 onChange={(event) => {
                     setEndDate(event.target.value);
                 }}
