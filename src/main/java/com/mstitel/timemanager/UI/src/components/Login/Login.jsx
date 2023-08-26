@@ -9,25 +9,18 @@ function Login(){
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
  
- 
-    async function login(event) {
-      event.preventDefault();
-        try {
-          await axios.post("/api/auth/signin", {
-            username: username,
-            password: password
-          }).then((res) => {
-                sessionStorage.setItem("token",res.data.token);
-                navigate('/home');
-              }, fail => {
-                  alert("Incorrect login or password");
-                  console.error(fail);
-                });
-          }
-         catch (err) {
-          alert(err);
-        }
-      }
+    const login = async() => {
+      axios.post("/api/auth/signin", {
+        username: username,
+        password: password
+      }).then((res) => {
+        sessionStorage.setItem("token",res.data.token);
+        navigate('/home');
+      }, fail => {
+          alert("Incorrect login or password");
+          console.error(fail);
+      });
+    }
 
     return(
        <div>

@@ -25,9 +25,12 @@ public class TaskService {
 
     public void updateTask(Task updatedTask) throws Exception {
         Task taskToUpdate = taskRepository.findById(updatedTask.getId()).orElseThrow(()->new Exception("Task is not found"));
-        taskToUpdate.setName(updatedTask.getName());
-        taskToUpdate.setDescription(updatedTask.getDescription());
-        taskToUpdate.setEndDate(updatedTask.getEndDate());
+        if (!updatedTask.getName().equals(""))
+            taskToUpdate.setName(updatedTask.getName());
+        if (!updatedTask.getDescription().equals(""))
+            taskToUpdate.setDescription(updatedTask.getDescription());
+        if (updatedTask.getEndDate() != null)
+            taskToUpdate.setEndDate(updatedTask.getEndDate());
         taskRepository.save(taskToUpdate);
     }
 

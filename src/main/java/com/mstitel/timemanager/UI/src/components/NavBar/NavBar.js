@@ -2,48 +2,32 @@ import React, { useState } from 'react'
 import './NavBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { useNavigate } from 'react-router-dom';
+import axios from '../../api/axiosConfig';
 
 function NavBar({ setTasks, searchVisible, getTasks }) {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const jwt = sessionStorage.getItem("token");
 
-  const logout = () => {
-    fetch('http://localhost:8080/api/auth/logout', {
-      method: 'GET'
-    })
-      .then((response) => {
-        if (response.ok) {
+  const logout = async() => {
+    axios.get('/api/auth/logout',
+      ).then((response) => {
           sessionStorage.setItem("token","");
           navigate('/login');
-        } else {
-        }
-      })
-      .catch((error) => {
-        console.error('Logout error:', error);
-      });
+        }).catch((error) => {
+            console.error('Logout error:', error);
+        });
   }
-  const search = () => {
-    fetch(`http://localhost:8080/api/tasks/search/${name}` , {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`
-        }
-      }).
-        then((response) => {
-          if(response.status === 200 ) return response.json();
-        }).
-          then((data) => {
-            if(data != null){
-            console.log(data);
-            setTasks(data);
-            }
-            
-          },
-            fail => {
-              console.log(fail);
-            })
+  const search = async() => {
+    axios.get(`/api/tasks/search/${name}`,
+      ).then((res) => {
+          if(res.data != null){
+            console.log(res.data);
+            setTasks(res.data);
+          }  
+        },fail => {
+            console.log(fail);
+          })
   }
 
   return (

@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import './AddDialogWindow.css';
 import imgAdded from "../../resources/undraw_confirmed_re_sef7.svg";
 import imgDeclined from "../../resources/undraw_access_denied_re_awnf.svg";
+import axios from "../../api/axiosConfig";
 
 export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [endDate, setEndDate] = useState("");
-    const jwt = sessionStorage.getItem("token");
     const [taskAdded, setTaskAdded] = useState(false);
     const [taskDeclined, setTaskDeclined] = useState(false);
 
@@ -15,36 +15,26 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
         setOpenModal(false);
     }
 
-    function addTask(){
-        fetch("http://localhost:8080/api/tasks/add", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jwt}`
-            },
-            body: JSON.stringify({
+    const addTask = async() => {
+        axios.post('/api/tasks/add', {
                 name: name,
                 description: description,
                 endDate: endDate
-            })
-          }).then((response) => {
-            if(response.status === 200 ) return response.json();
         }).then((data) => {
             setTaskAdded(true);
             getTasks();
-            setTimeout( () => {
+            setTimeout(() => {
                 setOpenModal(false);
             }, 2000);
             console.log(data);
-
-        }, fail => {
+        }).catch((error) => {
             setTaskDeclined(true);
-            setTimeout( () => {
+            setTimeout(() => {
                 setOpenModal(false);
             }, 2000);
-            console.log(fail);
-        })
-}
+            console.error(error);
+        });
+    }
 
     return(
         <>

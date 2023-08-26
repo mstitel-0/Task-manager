@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../api/axiosConfig";
 import { useState } from "react";
 import './Registration.css'
 import { useNavigate } from "react-router-dom";
@@ -9,34 +9,27 @@ function Registration(){
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    async function signup(event){
-        event.preventDefault();
-        try{
-            await axios.post("http://localhost:8080/api/auth/signup",{
+    const signup = async() => {
+        axios.post("/api/auth/signup",{
+            username: username,
+            email: email,
+            password: password
+        }).then( () => {
+            axios.post("/api/auth/signin", {
                 username: username,
-                email: email,
-                password: password
-            }).then( (res) => {
-                console.log(res);
-                 axios.post("http://localhost:8080/api/auth/signin", {
-                    username: username,
-                    password: password,
-                    }).then((res) => {
-                        console.log(res);
-                        navigate('/home');
-                    }, fail => {
-                      alert("Incorrect data");
-                      console.error(fail);
-                    });
+                password: password,
+            }).then((res) => {
+                sessionStorage.setItem("token",res.data.token);
+                navigate('/home');
+            }, fail => {
+                alert("Incorrect data");
+                console.error(fail);
+            })
             }, fail => {
                 alert("Something went wrong");
                 console.log(fail);
             })
-        }   
-        catch(err){
-            console.log(err);
-        }
-    }
+    }   
 
     return(
         <div>

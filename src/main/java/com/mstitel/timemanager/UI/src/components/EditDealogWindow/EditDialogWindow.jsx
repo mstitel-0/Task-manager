@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './EditDialogWindow.css';
 import { useAppContext } from '../../AppContext';
-import { useNavigate } from 'react-router-dom';
+import axios from '../../api/axiosConfig'
 
 function EditDialogWindow( { setOpenEditDialogWindow, getTask } ) {
-    const jwt = sessionStorage.getItem("token");
     const [taskEdited, setTaskEdited] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState("");
@@ -12,27 +11,17 @@ function EditDialogWindow( { setOpenEditDialogWindow, getTask } ) {
     const { taskId } = useAppContext();
 
     const editTask = async () => {
-        fetch("http://localhost:8080/api/tasks/update", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jwt}`
-            },
-            body: JSON.stringify({
-                id: taskId,
-                name: name,
-                description: description,
-                endDate: endDate
-            })
-          }).then((data) => {
+        axios.post('/api/tasks/update', {
+            id: taskId,
+            name: name,
+            description: description,
+            endDate: endDate
+        }).then((data) => {
             getTask();
-          },
-           fail => {
+        },fail => {
             console.log(fail);
-           })
+        })
     }
-
-    
 
   return (
     <>

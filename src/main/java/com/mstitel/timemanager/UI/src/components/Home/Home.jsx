@@ -6,32 +6,24 @@ import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from "../NavBar/NavBar";
-import Task from '../Task/Task'
 import img from '../../resources/add-btn.svg'
+import axios from "../../api/axiosConfig";
 
 
 function Home() {
-    const [openModal, setOpenModal] = useState(false);
-    const navigate = useNavigate();
-    const [tasks, setTasks] = useState([]);
-    const jwt = sessionStorage.getItem("token");
+  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+  const [tasks, setTasks] = useState([]);
+  const jwt = sessionStorage.getItem("token");
  
-      const getTasks = async () => {
-        fetch("http://localhost:8080/api/tasks/all", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jwt}`
-            }
-          }).then((response) => {
-            if(response.status === 200 ) return response.json();
-        }).then((data) => {
-            setTasks(data);
-            console.log(data);
-          },
-           fail => {
-            console.log(fail);
-           })
+  const getTasks = async () => {
+    axios.get('/api/tasks/all',
+      ).then((res) => {
+        console.log(res);
+          setTasks(res.data);
+          },fail => {
+              console.log(fail);
+          })
     }
     
     return( 

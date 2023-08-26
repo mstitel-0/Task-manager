@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import './Task.css';
 import imgEdit from '../../resources/edit.png';
 import imgDelete from '../../resources/delete-button.svg';
+import axios from '../../api/axiosConfig';
 
 function Task({}) {
   const jwt = sessionStorage.getItem("token"); 
@@ -19,41 +20,24 @@ function Task({}) {
   const searchVisible = true;
 
   const getTask = async () => {
-    fetch(`http://localhost:8080/api/tasks/${taskId}` , {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`
-        }
-      }).
-        then((response) => {
-          if(response.status === 200 ) return response.json();
-        }).
-          then((data) => {
-            setName(data.name);
-            setDescription(data.description);
-            setEndDate(data.endDate);
-            setStatus(data.status);
-          },
-            fail => {
-              console.log(fail);
-            })
+     axios.get(`/api/tasks/${taskId}`,
+     ).then((res) => {
+        setName(res.data.name);
+        setDescription(res.data.description);
+        setEndDate(res.data.endDate);
+        setStatus(res.data.status);
+      },fail => {
+          console.log(fail);
+      })
   }
 
   const deleteTask = async() => {
-    fetch(`http://localhost:8080/api/tasks/delete/${taskId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`
-        }
-    }).
-      then((data) => {
+    axios.post(`/api/tasks/delete/${taskId}`,
+    ).then(() => {
         navigate('/home');
-      },
-        fail => {
+      },fail => {
           console.log(fail);
-        })
+      })
   }
 
   useEffect(() => { 
