@@ -11,6 +11,7 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
     const [taskAdded, setTaskAdded] = useState(false);
     const [taskDeclined, setTaskDeclined] = useState(false);
     const currentDate = new Date().toISOString().split("T")[0];
+    const [failMsg, setFailMsg] = useState("");
 
 
     const closeDialog = () =>{
@@ -22,19 +23,27 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
                 name: name,
                 description: description,
                 endDate: endDate
-        }).then((data) => {
+        },{headers:{
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+        }} ).then((res) => {
             setTaskAdded(true);
             getTasks();
             setTimeout(() => {
                 setOpenModal(false);
             }, 2000);
-            console.log(data);
-        }).catch((error) => {
+        }, fail => {
+            console.log(fail.response.data);
+            if(fail.response.data.message != null){   
+                setFailMsg(fail.response.data.message);
+            }
+            else{
+                setFailMsg("Something wetn wrong");
+            }
             setTaskDeclined(true);
             setTimeout(() => {
                 setOpenModal(false);
             }, 2000);
-            console.error(error);
+            
         });
     }
 
@@ -73,7 +82,7 @@ export const AddWIndow = ( { openModal, setOpenModal, getTasks, tasks} ) => {
             <div>
                 <div className="modal-task-added">
                 <img className="modal-image" src={imgDeclined} />
-                <div className="modal-text">Something went wrong</div>
+                <div className="modal-text">{failMsg}</div>
                 </div>
             </div>
        )}

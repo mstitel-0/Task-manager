@@ -2,14 +2,18 @@ package com.mstitel.timemanager.Task;
 
 import com.mstitel.timemanager.Responses.MessageResponse;
 import com.mstitel.timemanager.User.CustomUserDetails;
+
+import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
@@ -21,10 +25,22 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addTask(@RequestBody Task task){
+    public ResponseEntity<?> addTask(@Valid @RequestBody Task task){
+        if (task.getName().equals("") || task.getDescription().equals("")){
+            return ResponseEntity.badRequest().body(new MessageResponse("Empty field(s)"));
+        }
+        Date currentDate = new Date();
+        if (task.getEndDate() == null){
+            task.setStatus(TaskStatus.WAITING);
+            task.setEndDate(null);
+        }
+        if(task.getEndDate() != null && task.getEndDate().before(currentDate)){
+            return ResponseEntity.badRequest().body(new MessageResponse("Incorrect date"));
+        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails)authentication.getPrincipal();
         task.setUserId(user.getId());
+
         taskService.addTask(task);
         return new ResponseEntity<>(new MessageResponse("Task added successfully"),HttpStatus.OK);
     }
@@ -60,9 +76,14 @@ public class TaskController {
         return new ResponseEntity<>(taskService.searchTasks(name, user.getId()), HttpStatus.OK);
     }
 
-    @PostMapping("/update/{id}/status")
-    public ResponseEntity<String> updateTaskStatus(@PathVariable ObjectId id) throws Exception {
-        taskService.updateTaskStatus(id);
+    @PostMapping("/update/{id}/done")
+    public ResponseEntity<?> updateTaskStatusDone(@PathVariable ObjectId id) throws Exception {
+        taskService.updateTaskDone(id);
+        return new ResponseEntity<>("Status updated", HttpStatus.OK);
+    }
+    @PostMapping("update/{id}/start")
+    public ResponseEntity<?> updateTaskStatusInProgress(@PathVariable ObjectId id,@RequestBody Task task) throws Exception{
+        taskService.updateTaskInProgress(id, task.getEndDate());
         return new ResponseEntity<>("Status updated", HttpStatus.OK);
     }
 }

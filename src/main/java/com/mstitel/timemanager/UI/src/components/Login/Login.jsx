@@ -10,7 +10,7 @@ function Login(){
     const navigate = useNavigate();
  
     const login = async() => {
-      axios.post("/api/auth/signin", {
+      axios.post("/api/auth/login", {
         username: username,
         password: password
       }).then((res) => {

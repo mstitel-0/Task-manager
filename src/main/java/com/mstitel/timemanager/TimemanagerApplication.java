@@ -13,10 +13,4 @@ public class TimemanagerApplication {
 		SpringApplication.run(TimemanagerApplication.class, args);
 	}
 
-	@GetMapping("/root")
-
-	public String apiRoot(){
-		return "Alibob";
-	}
-
 }

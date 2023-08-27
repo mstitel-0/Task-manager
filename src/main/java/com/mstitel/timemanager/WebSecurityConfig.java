@@ -61,7 +61,8 @@ public class WebSecurityConfig {
     @Bean
     public CorsFilter corsFilter(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000") ;
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://tasks-manager-mstitel-0.netlify.app");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 

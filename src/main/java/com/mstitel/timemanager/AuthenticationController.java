@@ -21,6 +21,12 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -38,7 +44,14 @@ public class AuthenticationController {
 
             private SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
-            @PostMapping("/signin")
+            private Pattern specialCharacterPattern = Pattern.compile("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+");
+
+            private  Matcher matcher;
+
+            private List<String> allowedEmailDomains = Arrays.asList("@gmail.com","@yahoo.com","@hotmail.com");
+
+            private Boolean isValidDomain = false;
+            @PostMapping("/login")
             public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
 
                 if(loginRequest.getUsername().equals("") || loginRequest.getPassword().equals("")){
@@ -69,7 +82,19 @@ public class AuthenticationController {
                 if(signUpRequest.getUsername().equals("") || signUpRequest.getEmail().equals("") || signUpRequest.getPassword().equals("")){
                     return ResponseEntity.badRequest().body(new MessageResponse("Empty field"));
                 }
-
+                matcher = specialCharacterPattern.matcher(signUpRequest.getPassword());
+                if (matcher.find()){
+                    return ResponseEntity.badRequest().body(new MessageResponse("Special character are ot allowed"));
+                }
+                for (String emailDomain : allowedEmailDomains){
+                    if (signUpRequest.getEmail().toLowerCase().endsWith(emailDomain)){
+                        isValidDomain = true;
+                        break;
+                    }
+                }
+                if (!isValidDomain){
+                    return ResponseEntity.badRequest().body(new MessageResponse("Incorrect mail domain"));
+                }
                 User user = new User(signUpRequest.getUsername(),signUpRequest.getEmail(),encoder.encode(signUpRequest.getPassword()));
                 userRepository.save(user);
 

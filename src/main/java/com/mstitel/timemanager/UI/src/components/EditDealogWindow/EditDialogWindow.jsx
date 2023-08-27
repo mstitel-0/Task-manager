@@ -18,7 +18,9 @@ function EditDialogWindow( { setOpenEditDialogWindow, getTask } ) {
             name: name,
             description: description,
             endDate: endDate
-        }).then((data) => {
+        },{headers:{
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+        }}).then((data) => {
             getTask();
         },fail => {
             console.log(fail);

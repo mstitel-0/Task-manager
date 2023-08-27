@@ -1,5 +1,6 @@
 package com.mstitel.timemanager.User;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ public class User {
 
     @Id
     private ObjectId id;
+    @Size(min = 5, max = 20, message = "Too many characters in the name field")
     private String username;
+    @Size(min = 8, max = 40, message = "Too many characters in the email field")
     private String email;
     private String password;
 

@@ -7,7 +7,7 @@ import imgEdit from '../../resources/edit.png';
 import imgDelete from '../../resources/delete-button.svg';
 import axios from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
-import { faI } from '@fortawesome/free-solid-svg-icons';
+import StartDialogWIndow from '../StartDialogWindow/StartDialogWindow'
 
 function Task() {
   const { taskId } = useParams();
@@ -17,28 +17,36 @@ function Task() {
   const [status, setStatus] = useState("");
   const [daysLeft, setDaysLeft] = useState("");
   const [openEditDialogWindow, setOpenEditDialogWindow] = useState(false);
+  const [openStartDialogWindow, setOpenStartDialogWindow] = useState(false);
   const navigate = useNavigate();
   const searchVisible = false;
 
   const getTask = async () => {
-     axios.get(`/api/tasks/${taskId}`,
+     axios.get(`/api/tasks/${taskId}`,{headers:{
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`
+  }}
      ).then((res) => {
         setName(res.data.name);
         setDescription(res.data.description);
-        setEndDate(new Date(res.data.endDate).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        }));
+        if(res.data.endDate != null){
+          setEndDate(new Date(res.data.endDate).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          }));
+          setDaysLeft(Math.ceil((new Date(res.data.endDate) - new Date()) / (1000 * 60 * 60 * 24)) +1);
+        }
         setStatus(res.data.status);
-        setDaysLeft(Math.ceil((new Date(res.data.endDate) - new Date()) / (1000 * 60 * 60 * 24)) +1);
+       
       },fail => {
           console.log(fail);
       })
   }
 
   const deleteTask = async() => {
-    axios.post(`/api/tasks/delete/${taskId}`
+    axios.post(`/api/tasks/delete/${taskId}`,{},{headers:{
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`
+  }}
     ).then(() => {
         navigate('/home');
       },fail => {
@@ -46,8 +54,10 @@ function Task() {
       })
   }
 
-  const updateStatus = async() => {
-    axios.post(`/api/tasks/update/${taskId}/status`
+  const doneStatus = async() => {
+    axios.post(`/api/tasks/update/${taskId}/done`,{},{headers:{
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`
+  }}
     ).then(() => {
       getTask();
     },
@@ -74,11 +84,20 @@ function Task() {
             <div className="task-container">
               <h2 className="task-name">Name:{name}</h2>
               <h4 className="task-hours">Description: {description}</h4>
-              <h5 className="task-hours">Days left: {daysLeft}</h5>
-              <p className="task-hours">Due: {endDate}</p>
+              {endDate != "" &&
+                <h5 className="task-hours">Days left: {daysLeft}</h5>
+              }
+              {daysLeft != "" &&
+                 <p className="task-hours">Due: {endDate}</p>
+              } 
               <p className="task-hours">Status: {status}</p>
-              {status != "DONE" &&
-                <button className='done-button' onClick={updateStatus}>Done</button>
+              {status == "IN_PROGRESS" &&
+                <button className='task-button' onClick={doneStatus}>Done</button>
+              }
+              {status == "WAITING" &&
+                <button className='task-button' onClick={() => {
+                  setOpenStartDialogWindow(true);
+                }}>Start</button>
               } 
             </div>
           </div>
@@ -99,6 +118,11 @@ function Task() {
               <div className="modal-overlay">
                 <EditDialogWIndow setOpenEditDialogWindow={setOpenEditDialogWindow} getTask={getTask} />
               </div>
+            }
+            {openStartDialogWindow && 
+              <div className="modal-overlay">
+                <StartDialogWIndow setOpenStartDialogWindow={setOpenStartDialogWindow} getTask={getTask} />
+            </div>
             }        
       </div>
     </>

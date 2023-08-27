@@ -8,26 +8,28 @@ function Registration(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
     const signup = async() => {
         axios.post("/api/auth/signup",{
             username: username,
             email: email,
             password: password
         }).then( () => {
-            axios.post("/api/auth/signin", {
+            axios.post("/api/auth/login", {
                 username: username,
                 password: password,
             }).then((res) => {
                 sessionStorage.setItem("token",res.data.token);
                 navigate('/home');
             }, fail => {
-                alert("Incorrect data");
-                console.error(fail);
+                alert("Incorrect login or password");
             })
             }, fail => {
-                alert("Something went wrong");
                 console.log(fail);
+                if(fail.response.data.message == ""){  
+                    alert("Something went wrong");
+                }else{
+                    alert(fail.response.data.message);
+                }
             })
     }   
 

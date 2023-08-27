@@ -55,13 +55,20 @@ public class TaskService {
         return taskDTOS;
     }
 
-    public void updateTaskStatus(ObjectId id) throws Exception {
+    public void updateTaskDone(ObjectId id) throws Exception {
         Task task = taskRepository.findById(id).orElseThrow(() -> new Exception("Task not found"));
         task.setStatus(TaskStatus.DONE);
         taskRepository.save(task);
     }
 
-    @Scheduled(fixedRate = 360000)
+    public void updateTaskInProgress(ObjectId id, Date date) throws Exception{
+        Task task = taskRepository.findById(id).orElseThrow(() -> new Exception("Task not found"));
+        task.setStatus(TaskStatus.IN_PROGRESS);
+        task.setEndDate(date);
+        taskRepository.save(task);
+    }
+
+    @Scheduled(fixedRate = 3600)
     public void checkForExpiration(){
         Date currentDate = new Date();
         List<Task> tasks = taskRepository.findAll();

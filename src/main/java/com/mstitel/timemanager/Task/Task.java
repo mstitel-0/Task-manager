@@ -1,5 +1,7 @@
 package com.mstitel.timemanager.Task;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +19,15 @@ public class Task {
     @Id
     private ObjectId id;
 
+    @NotBlank
+    @Size(max = 30, message = "Too many characters in the name field")
     private String name;
 
+    @NotBlank
+    @Size(max = 150, message = "Too much characters in the description field")
     private String description;
     private Date endDate;
+
     private TaskStatus status = TaskStatus.IN_PROGRESS;
 
     private ObjectId userId;

@@ -11,7 +11,7 @@ public class TaskDTO {
 
     private String description;
     private Date endDate;
-    private TaskStatus status = TaskStatus.IN_PROGRESS;
+    private TaskStatus status;
 
     private ObjectId userId;
 
