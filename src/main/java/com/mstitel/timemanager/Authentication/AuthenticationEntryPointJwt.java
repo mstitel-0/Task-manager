@@ -1,4 +1,4 @@
-package com.mstitel.timemanager;
+package com.mstitel.timemanager.Authentication;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

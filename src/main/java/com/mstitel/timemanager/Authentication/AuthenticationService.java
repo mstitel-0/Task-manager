@@ -1,0 +1,42 @@
+package com.mstitel.timemanager.Authentication;
+
+import com.mstitel.timemanager.Authentication.EmailConfirmation.ConfirmationToken;
+import com.mstitel.timemanager.Authentication.EmailConfirmation.ConfirmationTokenService;
+import com.mstitel.timemanager.User.User;
+import com.mstitel.timemanager.User.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Service
+public class AuthenticationService {
+
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ConfirmationTokenService confirmationTokenService;
+
+    public String register(User user){
+        User newUser = new User(user.getUsername(),user.getEmail(),encoder.encode(user.getPassword()));
+        userRepository.save(newUser);
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                newUser.getId()
+        );
+
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        return confirmationToken.getToken();
+    }
+}

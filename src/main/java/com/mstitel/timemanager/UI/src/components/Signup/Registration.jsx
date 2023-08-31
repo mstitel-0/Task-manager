@@ -14,15 +14,7 @@ function Registration(){
             email: email,
             password: password
         }).then( () => {
-            axios.post("/api/auth/login", {
-                username: username,
-                password: password,
-            }).then((res) => {
-                sessionStorage.setItem("token",res.data.token);
-                navigate('/home');
-            }, fail => {
-                alert("Incorrect login or password");
-            })
+            alert("Confirm your email");
             }, fail => {
                 console.log(fail);
                 if(fail.response.data.message == ""){  

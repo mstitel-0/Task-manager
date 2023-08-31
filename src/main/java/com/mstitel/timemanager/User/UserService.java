@@ -1,8 +1,6 @@
 package com.mstitel.timemanager.User;
 
-import com.mstitel.timemanager.User.CustomUserDetails;
-import com.mstitel.timemanager.User.User;
-import com.mstitel.timemanager.User.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
@@ -23,5 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with this username not found" + username));
 
         return CustomUserDetails.build(user);
+    }
+    public void enableUser(ObjectId id) throws Exception {
+        User user = userRepository.findById(id).orElseThrow(() -> new Exception("User not found"));
+        user.setIsEnabled(true);
+        userRepository.save(user);
     }
 }

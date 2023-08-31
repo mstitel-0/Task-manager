@@ -1,6 +1,6 @@
-package com.mstitel.timemanager;
+package com.mstitel.timemanager.Authentication;
 
-import com.mstitel.timemanager.User.CustomUserDetailsService;
+import com.mstitel.timemanager.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig {
 
     @Autowired
-    CustomUserDetailsService userDetailsService;
+    private UserService userDetailsService;
 
     @Autowired
     private AuthenticationEntryPointJwt unauthorizedHandler;

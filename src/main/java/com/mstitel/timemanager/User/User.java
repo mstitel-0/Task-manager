@@ -22,6 +22,10 @@ public class User {
     private String email;
     private String password;
 
+    private Boolean isLocked = false;
+
+    private Boolean isEnabled = false;
+
 
     public User(String userName, String email, String password) {
         this.username = userName;

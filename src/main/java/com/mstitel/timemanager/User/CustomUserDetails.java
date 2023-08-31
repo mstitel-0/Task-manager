@@ -18,11 +18,17 @@ public class CustomUserDetails implements UserDetails {
     @JsonIgnore
     private String password;
 
-    public CustomUserDetails(ObjectId id, String username, String email, String password) {
+    private Boolean isLocked ;
+
+    private Boolean isEnabled ;
+
+    public CustomUserDetails(ObjectId id, String username, String email, String password, Boolean isLocked, Boolean isEnabled) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isLocked = isLocked;
+        this.isEnabled = isEnabled;
     }
 
     public static CustomUserDetails build(User user){
@@ -31,7 +37,9 @@ public class CustomUserDetails implements UserDetails {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getPassword());
+                user.getPassword(),
+                user.getIsLocked(),
+                user.getIsEnabled());
     }
 
     @Override
@@ -65,7 +73,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
 
     @Override
@@ -75,7 +83,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     @Override
