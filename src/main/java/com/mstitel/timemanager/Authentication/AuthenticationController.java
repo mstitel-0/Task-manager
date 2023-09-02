@@ -1,7 +1,6 @@
 package com.mstitel.timemanager.Authentication;
 
-import com.mstitel.timemanager.Authentication.EmailConfirmation.ConfirmationToken;
-import com.mstitel.timemanager.Authentication.EmailConfirmation.ConfirmationTokenService;
+import com.mstitel.timemanager.Authentication.ConfrimationToken.ConfirmationTokenService;
 import com.mstitel.timemanager.Authentication.EmailSender.EmailSender;
 import com.mstitel.timemanager.Requests.LoginRequest;
 import com.mstitel.timemanager.Requests.SignUpRequest;
@@ -16,17 +15,15 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,6 +107,7 @@ public class AuthenticationController {
         );
 
         String link = "http://localhost:8080/api/auth/signup/confirm?token=" + token;
+
         emailSender.send(signUpRequest.getEmail(),
                 buildEmail(signUpRequest.getUsername(), link) );
 
@@ -117,7 +115,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/signup/confirm")
-    public String confirm(@RequestParam("token") String token) throws Exception {
+    public RedirectView confirm(@RequestParam("token") String token) throws Exception {
         return confirmationTokenService.confirmToken(token);
     }
     @PostMapping("/logout")

@@ -5,16 +5,17 @@ import jakarta.validation.constraints.Size;
 
 public class SignUpRequest {
 
-    @NotBlank
+
     @Size(min = 3, max = 20 )
+    @NotBlank
     private String username;
 
+    @Size(min= 8, max = 50 )
     @NotBlank
-    @Size(max = 50 )
     private String email;
 
-    @NotBlank
     @Size(min = 6, max = 30 )
+    @NotBlank
     private String password;
 
     public String getUsername() {

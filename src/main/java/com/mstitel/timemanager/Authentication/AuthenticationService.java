@@ -1,7 +1,7 @@
 package com.mstitel.timemanager.Authentication;
 
-import com.mstitel.timemanager.Authentication.EmailConfirmation.ConfirmationToken;
-import com.mstitel.timemanager.Authentication.EmailConfirmation.ConfirmationTokenService;
+import com.mstitel.timemanager.Authentication.ConfrimationToken.ConfirmationToken;
+import com.mstitel.timemanager.Authentication.ConfrimationToken.ConfirmationTokenService;
 import com.mstitel.timemanager.User.User;
 import com.mstitel.timemanager.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

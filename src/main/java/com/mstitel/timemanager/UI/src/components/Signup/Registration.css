@@ -26,7 +26,7 @@
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 .clickable-text {
-  color: #007bff; /* Blue color for the link */
+  color: #007bff; 
   cursor: pointer;
   text-decoration: underline;
   transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
@@ -34,13 +34,64 @@
 
 .clickable-text:focus,
 .clickable-text:hover {
-  color: #0056b3; /* Darker blue color on focus/hover */
-  text-decoration: none; /* Remove underline on focus/hover */
+  color: #0056b3; 
+  text-decoration: none; 
 }
 
-button#signupbtn{
-    width: 110px;
-    height: 45px;
-    margin-top: 10px;
-    text-align: center;
+button#signupbtn {
+  width: 110px;
+  height: 45px;
+  margin-top: 10px;
+  text-align: center;
+  position: relative;
+  padding: 8px 16px;
+  background: #f96bdd;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+button#signupbtn:active {
+  background: #7a0070;
+}
+button#signupbtn:hover {
+  background: #cc4cd8;
+}
+
+.button__text {
+  font: bold 20px "Quicksand", sans-serif;
+  color: #ffffff;
+  transition: all 0.2s;
+}
+
+.button--loading .button__text {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.button--loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
 }

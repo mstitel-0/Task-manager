@@ -8,8 +8,10 @@ function Login(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false); 
  
     const login = async() => {
+      setIsLoading(true);
       axios.post("/api/auth/login", {
         username: username,
         password: password
@@ -19,6 +21,8 @@ function Login(){
       }, fail => {
           alert("Incorrect login or password");
           console.error(fail);
+      }).finally(() => {
+        setIsLoading(false); 
       });
     }
 
@@ -40,7 +44,14 @@ function Login(){
                   setPassword(event.target.value);
                   }}
                 />
-                <button id="loginbtn" type="submit" className="btn btn-primary" onClick={login} >Login</button>
+                <button
+                    id="loginbtn"
+                    className={`btn btn-primary ${isLoading ? 'button--loading' : ''}`}
+                    onClick={login}
+                    disabled={isLoading} 
+                >
+                <div className="button__text">Login</div>
+                </button>
                 <p>Don't have an account?<span onClick={() => {
                   navigate('/signup'); 
                 }} className="clickable-text">Sign up</span></p>

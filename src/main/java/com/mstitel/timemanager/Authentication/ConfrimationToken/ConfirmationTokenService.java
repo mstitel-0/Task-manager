@@ -1,10 +1,10 @@
-package com.mstitel.timemanager.Authentication.EmailConfirmation;
+package com.mstitel.timemanager.Authentication.ConfrimationToken;
 
 import com.mstitel.timemanager.User.UserService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
 
@@ -26,23 +26,23 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.save(confirmationToken);
     }
     @Transactional
-    public String confirmToken(String token) throws Exception {
+    public RedirectView confirmToken(String token) throws Exception {
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token).orElseThrow(() -> new Exception("Token is not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("Email already confirmed");
+            throw new Exception("Email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Token expired");
+            throw new Exception("Token expired");
         }
 
         setConfirmedAt(token);
         userService.enableUser(
                 confirmationToken.getUserId());
-        return "confirmed";
+        return new RedirectView("http://localhost:3000/login");
     }
 
 }

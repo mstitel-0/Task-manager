@@ -1,4 +1,4 @@
-package com.mstitel.timemanager.Authentication.EmailConfirmation;
+package com.mstitel.timemanager.Authentication.ConfrimationToken;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

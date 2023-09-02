@@ -1,4 +1,4 @@
-package com.mstitel.timemanager.Authentication.EmailConfirmation;
+package com.mstitel.timemanager.Authentication.ConfrimationToken;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
