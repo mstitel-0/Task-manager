@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import EditDialogWIndow  from '../EditDealogWindow/EditDialogWindow'
+import EditDialogWIndow  from '../EditDialogWindow/EditDialogWindow'
 import NavBar from '../NavBar/NavBar'
 import { useNavigate } from 'react-router-dom';
 import './Task.css';

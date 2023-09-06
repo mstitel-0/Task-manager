@@ -1,5 +1,6 @@
-package com.mstitel.timemanager.Authentication;
+package com.mstitel.timemanager.Security;
 
+import com.mstitel.timemanager.Authentication.AuthenticationEntryPointJwt;
 import com.mstitel.timemanager.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -75,8 +76,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(csrf -> csrf.disable()).exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**")
-                        .permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/profile/{id}").permitAll()
                         .anyRequest().authenticated());
 
         httpSecurity.authenticationProvider(authenticationProvider());

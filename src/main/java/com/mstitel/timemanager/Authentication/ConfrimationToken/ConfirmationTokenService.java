@@ -1,5 +1,6 @@
 package com.mstitel.timemanager.Authentication.ConfrimationToken;
 
+import com.mstitel.timemanager.Profile.ProfileService;
 import com.mstitel.timemanager.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class ConfirmationTokenService {
         setConfirmedAt(token);
         userService.enableUser(
                 confirmationToken.getUserId());
+
         return new RedirectView("http://localhost:3000/login");
     }
 

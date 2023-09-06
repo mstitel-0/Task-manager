@@ -6,6 +6,7 @@ import com.mstitel.timemanager.Requests.LoginRequest;
 import com.mstitel.timemanager.Requests.SignUpRequest;
 import com.mstitel.timemanager.Responses.JwtResponse;
 import com.mstitel.timemanager.Responses.MessageResponse;
+import com.mstitel.timemanager.Security.JwtUtils;
 import com.mstitel.timemanager.User.CustomUserDetails;
 import com.mstitel.timemanager.User.User;
 import com.mstitel.timemanager.User.UserRepository;
@@ -46,7 +47,7 @@ public class AuthenticationController {
 
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
-    private final Pattern specialCharacterPattern = Pattern.compile("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+");
+    private final Pattern specialCharacterPattern = Pattern.compile("[!@#$%^&*()+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+");
 
     private  Matcher matcher;
 

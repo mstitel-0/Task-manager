@@ -9,6 +9,7 @@ import Registration from './components/Signup/Registration'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Task from './components/Task/Task'
 import Test from '../src/Test';
+import Profile from './components/Profile/Profile'
 
 function App() {
     return(
@@ -27,6 +28,7 @@ function App() {
           <Route path= "/signup" element= { <Registration/> }/>
           <Route path="/home/task/:taskId" element={<PrivateRoute> <Task /> </PrivateRoute>} />
           <Route path="/test" element={<Test/>}/>
+          <Route path="/home/profile/:profileId" element={<Profile/>}></Route>
         </Routes>
       </div>
     )

@@ -34,5 +34,6 @@
   }
   .home-bar{
     width:100%;
+    display: flex;
   }
 

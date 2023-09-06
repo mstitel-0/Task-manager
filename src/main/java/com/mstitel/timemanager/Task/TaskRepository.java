@@ -11,12 +11,8 @@ import java.util.regex.Pattern;
 @Repository
 public interface TaskRepository extends MongoRepository<Task, ObjectId> {
     Boolean existsByName(String name);
-
-    @Override
     Optional<Task> findById(ObjectId objectId);
-
     List<Task> findByUserId(ObjectId userId);
-
     List<Task> findByNameRegexAndUserId(Pattern regex, ObjectId userId);
 
 

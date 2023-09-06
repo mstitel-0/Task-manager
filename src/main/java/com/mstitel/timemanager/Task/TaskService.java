@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import com.mstitel.timemanager.Profile.Profile;
+import com.mstitel.timemanager.Profile.ProfileRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Service;
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private ProfileRepository profileRepository;
 
     public Task addTask(Task task){
         return taskRepository.save(task);
@@ -58,7 +63,12 @@ public class TaskService {
     public void updateTaskDone(ObjectId id) throws Exception {
         Task task = taskRepository.findById(id).orElseThrow(() -> new Exception("Task not found"));
         task.setStatus(TaskStatus.DONE);
+        Profile profile = profileRepository.findByUserId(task.getUserId()).orElseThrow(() -> new Exception("Profile not found"));
+        profile.updateTasksList(task);
+        profile.setAmountOfCompletedTasks(profile.getAmountOfCompletedTasks()+1);
+        profileRepository.save(profile);
         taskRepository.save(task);
+
     }
 
     public void updateTaskInProgress(ObjectId id, Date date) throws Exception{

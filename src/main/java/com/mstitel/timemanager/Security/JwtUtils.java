@@ -1,4 +1,4 @@
-package com.mstitel.timemanager.Authentication;
+package com.mstitel.timemanager.Security;
 
 import com.mstitel.timemanager.User.CustomUserDetails;
 import io.jsonwebtoken.*;
