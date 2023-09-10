@@ -4,16 +4,42 @@ import com.mstitel.timemanager.Task.Task;
 import com.mstitel.timemanager.Task.TaskDTO;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
+
+    private final Path fileStorageLocation;
+
+    public ProfileService() {
+        this.fileStorageLocation = Paths.get("src", "main", "java",
+                "com", "mstitel", "timemanager", "UI", "src", "resources", "ProfilePictures").toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(this.fileStorageLocation);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not create the directory to save profile pictures.", e);
+        }
+    }
 
     public void createProfile(String name,ObjectId userId){
         Profile profile = new Profile();
@@ -51,9 +77,17 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    public void setProfilePicture(String profilePicture, ObjectId id) throws Exception {
+    public void setProfilePicture(MultipartFile imageFile, ObjectId id) throws Exception {
         Profile profile = profileRepository.findById(id).orElseThrow(() -> new Exception("Profile not found"));
-        profile.setProfilePictureUrl(profilePicture);
+
+        String desiredFileName = profile.getUserId().toString() + ".png";
+
+
+        Path targetLocation = this.fileStorageLocation.resolve(desiredFileName);
+        Files.copy(imageFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+       profile.saveUrl(targetLocation.toString());
+
         profileRepository.save(profile);
     }
 

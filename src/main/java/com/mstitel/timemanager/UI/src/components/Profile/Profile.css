@@ -55,8 +55,11 @@ h2{
     color: gray;
     text-align: center; 
     padding: 10px;
+}
+p{
     white-space: normal;
     word-wrap: break-word;
+    font-size: 20px;
 }
 .recent-container{
     display: grid;
@@ -68,7 +71,11 @@ h2{
     backdrop-filter: blur(10px);
     width: 80%;
     height: 50px;
+    text-align: center;
 }
 .task-recent-container:hover{
     scale: 1.05;
+}
+.bio-input{
+    width: 100%;
 }

@@ -5,11 +5,13 @@ import com.mstitel.timemanager.Task.TaskDTO;
 import com.mstitel.timemanager.User.CustomUserDetails;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -45,10 +47,10 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("Profile successfully edited"));
     }
 
-    @PostMapping("/picture")
-    public ResponseEntity<?>setProfilePicture(String profilePictureLink, @PathVariable ObjectId id) throws Exception {
+    @PostMapping("/{id}/picture")
+    public ResponseEntity<?>setProfilePicture(@RequestParam("image") MultipartFile imageFile, @PathVariable ObjectId id) throws Exception {
 
-        profileService.setProfilePicture(profilePictureLink, id);
+        profileService.setProfilePicture(imageFile, id);
 
         return ResponseEntity.ok(new MessageResponse("pfp updated"));
     }

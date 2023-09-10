@@ -49,4 +49,14 @@ public class Profile {
         }
     }
 
+    public void saveUrl(String url){
+        int index = url.indexOf("resources");
+        if(index != -1){
+            String relativeUrl = url.substring(index);
+            relativeUrl ="../../" + relativeUrl.replace('\\','/');
+            this.profilePictureUrl = relativeUrl;
+        }
+
+    }
+
 }

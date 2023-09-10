@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import imgEdit from '../../resources/edit.png'
 import imgTick from '../../resources/tick.png'
 import NavBar from '../NavBar/NavBar'
 import './Profile.css'
-import imgPro from '../../resources/null-avatar.png'
+import defaultImg from '../../resources/null-avatar.png'
 import axios from '../../api/axiosConfig'
+
 import { useNavigate, useParams } from 'react-router-dom'
 function Profile() {
-    const [openModal, setOpenModal] = useState(false);
     const { profileId } = useParams();
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
@@ -16,7 +16,11 @@ function Profile() {
     const [isHovered, setIsHovered] = useState(false);
     const [completedTasks, setCompletedTasks] = useState([]);
     const navigate = useNavigate();
+    const [profilePictureUrl, setProfilePictureUrl] = useState("");
     const [edit, setEdit] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const fileInputRef = useRef(null);
+    var profilePic = require("../../resources/null-avatar.png");
 
   const getCompletedTasks = async() => {
       axios.get("/profile/tasks",{headers: {
@@ -30,6 +34,7 @@ function Profile() {
         console.log(fail);
       })
   }
+
   const getProfile = async() => {
     axios.get(`/profile/${profileId}`)
     .then((res) => {
@@ -38,52 +43,84 @@ function Profile() {
       setSurname(res.data.surname);
       setBio(res.data.bio);
       setAmountOfcompletedTasks(res.data.amountOfCompletedTasks);
+      setProfilePictureUrl(res.data.profilePictureUrl);
+      profilePic = require(profilePictureUrl.toString());
+      console.log(profilePictureUrl);
     }, fail => {
       console.log(fail);
     })
   }
 
-    useEffect(() => {
-      getCompletedTasks();
-      getProfile();
-    },[])
+  const uploadProfilePhoto = async (file) => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+
+      try {
+        await axios.post(`/profile/${profileId}/picture`, formData, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+          },
+        });
+        alert('Image uploaded successfully.');
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    } else {
+      alert('Please select an image file.');
+    }
+  }
+
+  useEffect(() => {
+    getProfile();
+    getCompletedTasks();
+  },[])
+
   return (
     <div className="main-page">
         <div className="content-box">
           <div className="navBar">
               <NavBar searchVisible={false}/>
           </div>
-          <hr/>
           <div className="main-container">
             <div className='left-panel'> 
-            {!edit ? (
-              <>
-                <h1>Name: {name}</h1>
-                <h2>Surname: {surname}</h2>
-              </>
-            ) : (
-              <>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={surname}
-                  onChange={(e) => setSurname(e.target.value)}
-                />
-              </>
-            )}
-                <h2>Amount of completed tasks: {amountOfCompletedTasks}</h2>
-                <h2>Recently completed tasks:</h2>
+              <h1>Name: {!edit ? 
+                (
+                  <>
+                    {name}
+                  </>
+                ) : (
+                  <>
+                    <input
+                       type="text"
+                       value={name}
+                       onChange={(e) => setName(e.target.value)}
+                    />
+                  </>
+                )  
+              }</h1>
+              <h2>Surname:{!edit ? (
+                <>
+                  {surname}
+                </>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
+                  />
+                </>
+              )} </h2>
+              <h2>Amount of completed tasks: {amountOfCompletedTasks}</h2>
+              <h2>Recently completed tasks:</h2>
                 <div className='recent-container'>
                   <div>
                     {completedTasks.map(task => (    
                       <div key={task.id} className="task-recent-container" onClick={ () => {
                         navigate(`/home/task/${task.id}`);
                       }}>
-                      <h3>{task.name}</h3>
+                        <h3>{task.name}</h3>
                       </div>
                       ))
                     }   
@@ -96,29 +133,46 @@ function Profile() {
                     onMouseLeave={() => setIsHovered(false)}
                     >
                     {isHovered && (
-                        <div className="hover-overlay" onClick={() => {console.log("ok")}}>
+                        <div className="hover-overlay" onClick={() => {
+                          fileInputRef.current.click();
+                        }}>
+                          <input
+                            type="file"
+                            accept=".png, .jpg, .jpeg"
+                            style={{ display: 'none' }}
+                            ref={fileInputRef}
+                            onChange={(event) => {
+                              setSelectedFile(event.target.files[0]);
+                              if (selectedFile) {
+                                uploadProfilePhoto(selectedFile);
+                              }
+                            }}
+                          />
                             Edit
                         </div>
                     )}
                     <img
-                        src={imgPro}
+                        src={
+                          !profilePictureUrl? defaultImg : profilePic
+                        }
                         className="profile-picture"
                     />
                 </div>
                 <div className='text-container'>
-                  {!edit ? ( 
+                  <h1>BIO {!edit? (
                     <>
-                      <h1>BIO</h1>
                       <p>{bio}</p>
                     </>
                   ) : (
-                    <input
-                      type='text'
-                      value={bio}
-                      onChange={(e) => setBio(e.target.value)}
+                    <>
+                      <input
+                        type='text'
+                        className='bio-input'
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
                     />
-                  )
-                  }
+                    </>
+                  )}</h1>
                 </div>
             </div>
           </div>
@@ -135,12 +189,7 @@ function Profile() {
               }}>    
            <img src={imgTick} width="30" height="30"  />
           </div>
-        )}
-          {openModal && 
-            <div className="modal-overlay">
-              
-            </div>
-          }        
+        )}      
     </div>
   )
 }
