@@ -4,24 +4,16 @@ import com.mstitel.timemanager.Task.Task;
 import com.mstitel.timemanager.Task.TaskDTO;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,7 +72,7 @@ public class ProfileService {
     public void setProfilePicture(MultipartFile imageFile, ObjectId id) throws Exception {
         Profile profile = profileRepository.findById(id).orElseThrow(() -> new Exception("Profile not found"));
 
-        String desiredFileName = profile.getUserId().toString() + ".png";
+        String desiredFileName = profile.getId().toString() + ".png";
 
 
         Path targetLocation = this.fileStorageLocation.resolve(desiredFileName);

@@ -3,7 +3,6 @@ import imgEdit from '../../resources/edit.png'
 import imgTick from '../../resources/tick.png'
 import NavBar from '../NavBar/NavBar'
 import './Profile.css'
-import defaultImg from '../../resources/null-avatar.png'
 import axios from '../../api/axiosConfig'
 
 import { useNavigate, useParams } from 'react-router-dom'
@@ -16,12 +15,11 @@ function Profile() {
     const [isHovered, setIsHovered] = useState(false);
     const [completedTasks, setCompletedTasks] = useState([]);
     const navigate = useNavigate();
-    const [profilePictureUrl, setProfilePictureUrl] = useState("");
     const [edit, setEdit] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
+    var selectedFile;
     const fileInputRef = useRef(null);
-    var profilePic = require("../../resources/null-avatar.png");
-
+    const [img, setImg] = useState();
+    
   const getCompletedTasks = async() => {
       axios.get("/profile/tasks",{headers: {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`
@@ -43,15 +41,16 @@ function Profile() {
       setSurname(res.data.surname);
       setBio(res.data.bio);
       setAmountOfcompletedTasks(res.data.amountOfCompletedTasks);
-      setProfilePictureUrl(res.data.profilePictureUrl);
-      profilePic = require(profilePictureUrl.toString());
-      console.log(profilePictureUrl);
+      import(
+        `../../resources/ProfilePictures/${res.data.profilePictureUrl? profileId : "null-avatar"}.png`
+      ).then((image) => setImg(image.default));
     }, fail => {
       console.log(fail);
     })
   }
+   
 
-  const uploadProfilePhoto = async (file) => {
+  const uploadProfilePhoto = async(file) => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('image', selectedFile);
@@ -69,10 +68,14 @@ function Profile() {
     } else {
       alert('Please select an image file.');
     }
+
   }
 
   useEffect(() => {
     getProfile();
+  },[])
+
+  useEffect(() => {
     getCompletedTasks();
   },[])
 
@@ -142,7 +145,7 @@ function Profile() {
                             style={{ display: 'none' }}
                             ref={fileInputRef}
                             onChange={(event) => {
-                              setSelectedFile(event.target.files[0]);
+                              selectedFile = event.target.files[0];
                               if (selectedFile) {
                                 uploadProfilePhoto(selectedFile);
                               }
@@ -152,9 +155,8 @@ function Profile() {
                         </div>
                     )}
                     <img
-                        src={
-                          !profilePictureUrl? defaultImg : profilePic
-                        }
+                        src={img}
+                        alt='not found'
                         className="profile-picture"
                     />
                 </div>
