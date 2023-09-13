@@ -12,7 +12,6 @@ function Registration() {
 
     const signup = async () => {
         setIsLoading(true); 
-
         axios.post("/api/auth/signup", {
             username: username,
             email: email,

@@ -84,7 +84,7 @@ public class ProfileService {
     }
 
     public List<TaskDTO> getCompletedTasks(ObjectId id) throws Exception {
-        Profile profile = profileRepository.findByUserId(id).orElseThrow(() -> new Exception("Not found"));
+        Profile profile = profileRepository.findById(id).orElseThrow(() -> new Exception("Not found"));
         List<Task> completedTasks = profile.getLastCompletedTasks();
         List<TaskDTO> taskDTOS = completedTasks.stream().map(task -> new TaskDTO(task.getId().toString(), task.getName(), task.getDescription(), task.getEndDate(), task.getStatus(), task.getUserId()))
                 .collect(Collectors.toList());

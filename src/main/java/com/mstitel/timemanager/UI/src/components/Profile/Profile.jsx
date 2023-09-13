@@ -19,14 +19,11 @@ function Profile() {
     var selectedFile;
     const fileInputRef = useRef(null);
     const [img, setImg] = useState();
+    const authenticated = sessionStorage.getItem("token") == null? false : true;
     
   const getCompletedTasks = async() => {
-      axios.get("/profile/tasks",{headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`
-      }}
-      )
+      axios.get(`/profile/tasks/${profileId}`)
       .then((res) => {
-        console.log(res);
         setCompletedTasks(res.data);
       }, fail => {
         console.log(fail);
@@ -36,7 +33,6 @@ function Profile() {
   const getProfile = async() => {
     axios.get(`/profile/${profileId}`)
     .then((res) => {
-      console.log(res);
       setName(res.data.name);
       setSurname(res.data.surname);
       setBio(res.data.bio);
@@ -44,6 +40,23 @@ function Profile() {
       import(
         `../../resources/ProfilePictures/${res.data.profilePictureUrl? profileId : "null-avatar"}.png`
       ).then((image) => setImg(image.default));
+    }, fail => {
+      console.log(fail);
+    })
+  }
+
+  const editProfile = async() => {
+    axios.post(`/profile/edit/${profileId}`,{
+      name: name,
+      surname: surname,
+      bio: bio
+    },{
+      headers:{
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`
+      }
+    })
+    .then((res) => {
+       
     }, fail => {
       console.log(fail);
     })
@@ -179,19 +192,24 @@ function Profile() {
             </div>
           </div>
         </div>
-        {!edit ? (
-          <div className="add-button-container" onClick={() => {
-            setEdit(true);
+        {authenticated &&
+          <>
+            {!edit ? (
+              <div className="add-button-container" onClick={() => {
+                setEdit(true);
+                  }}>    
+              <img src={imgEdit} width="50" height="50"  />
+              </div>
+            ) : (
+              <div className="add-button-container" onClick={() => {
+                editProfile();
+                setEdit(false);
               }}>    
-           <img src={imgEdit} width="50" height="50"  />
-          </div>
-        ) : (
-          <div className="add-button-container" onClick={() => {
-            setEdit(false);
-              }}>    
-           <img src={imgTick} width="30" height="30"  />
-          </div>
-        )}      
+              <img src={imgTick} width="30" height="30"/>
+              </div>
+            )} 
+          </>
+        }     
     </div>
   )
 }

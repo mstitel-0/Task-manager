@@ -79,6 +79,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/profile/{id}").permitAll()
+                        .requestMatchers("/profile/tasks/{id}").permitAll()
                         .anyRequest().authenticated());
 
         httpSecurity.authenticationProvider(authenticationProvider());
