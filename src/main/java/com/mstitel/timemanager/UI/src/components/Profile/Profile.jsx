@@ -22,7 +22,7 @@ function Profile() {
     const authenticated = sessionStorage.getItem("token") == null? false : true;
     
   const getCompletedTasks = async() => {
-      axios.get(`/profile/tasks/${profileId}`)
+      axios.get(`/api/tasks/profile/${profileId}`)
       .then((res) => {
         setCompletedTasks(res.data);
       }, fail => {

@@ -1,7 +1,6 @@
 package com.mstitel.timemanager.Security;
 
-import com.mstitel.timemanager.Authentication.AuthenticationEntryPointJwt;
-import com.mstitel.timemanager.User.UserService;
+import com.mstitel.timemanager.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,7 +62,6 @@ public class WebSecurityConfig {
     public CorsFilter corsFilter(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://tasks-manager-mstitel-0.netlify.app");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 
@@ -79,7 +77,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/profile/{id}").permitAll()
-                        .requestMatchers("/profile/tasks/{id}").permitAll()
+                        .requestMatchers("/api/tasks/profile/{id}").permitAll()
                         .anyRequest().authenticated());
 
         httpSecurity.authenticationProvider(authenticationProvider());

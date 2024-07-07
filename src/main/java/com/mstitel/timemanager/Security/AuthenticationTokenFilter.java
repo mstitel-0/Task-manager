@@ -1,6 +1,6 @@
 package com.mstitel.timemanager.Security;
 
-import com.mstitel.timemanager.User.UserService;
+import com.mstitel.timemanager.Services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
